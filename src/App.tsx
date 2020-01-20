@@ -17,7 +17,8 @@ import './App.css';
 
 
 class Header extends React.Component<any, any> {
-  
+  storeData = '';
+  arrayResult = [];
   constructor (props:any) {
     super(props);
     this.state = {
@@ -29,7 +30,8 @@ class Header extends React.Component<any, any> {
       checkB:false,
       checkC:false,
       Counter:0,
-      onchangeCounter:0
+      onchangeCounter:0,
+      allResult:[]
     };
   }
   
@@ -106,8 +108,17 @@ class Header extends React.Component<any, any> {
       alert('Please Check the Switch');
     }
   }
+  getData = () => {
+    let data = fetch(`https://jsonplaceholder.typicode.com/users`);
+    data.then(respone => {
+      return respone.json();
+    }).then(result => {
+      this.setState({allResult:result});
+    })
+  }
 
   render() {
+    console.log(`AllData`, this.state.allResult);
     return(
       <React.Fragment>
         <AppBar>
@@ -118,7 +129,7 @@ class Header extends React.Component<any, any> {
           </Typography>
           <div style={{ marginLeft:'60%' }}>
           <Button type="button" style={{backgroundColor:'orange',color:'white'}} onClick={this.handleClick}>Login</Button>
-          <Button style={{backgroundColor:'orange',color:'white', marginLeft:10}}>Register</Button>
+          <Button style={{backgroundColor:'orange',color:'white', marginLeft:10}} onClick= {this.getData}>View</Button>
           </div>
           </Toolbar>
           <Dialog open={this.state.open} aria-labelledby="form-dialog-title">
