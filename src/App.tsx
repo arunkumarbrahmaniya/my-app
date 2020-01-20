@@ -13,6 +13,12 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Paper from '@material-ui/core/Paper';
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 import './App.css';
 
 
@@ -192,19 +198,49 @@ class Header extends React.Component<any, any> {
         </DialogActions>
       </Dialog>
         </AppBar>
-        <Content/>
+        (this.state.allResult !== '' || this.state.allResult !== undefined) ?
+        (<div style={{ height:700, width:'100%', backgroundColor:'dodgerblue', marginTop:45 }}>
+          <Paper style={{width:'80%', marginLeft:120}}>
+          <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>ID</TableCell>
+            <TableCell >Name</TableCell>
+            <TableCell >Username</TableCell>
+            <TableCell >Website</TableCell>
+            <TableCell >Email</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          
+            {
+              this.state.allResult.map((data:any) => {
+              return <TableRow>
+              <TableCell>{data.id}</TableCell>
+              <TableCell>{data.name}</TableCell>
+              <TableCell>{data.username}</TableCell>
+              <TableCell>{data.website}</TableCell>
+              <TableCell>{data.email}</TableCell>
+              </TableRow>
+              })
+            }
+            </TableBody>
+            </Table>
+            </Paper>
+        </div>) :''
       </React.Fragment>
       
     )
   }
 }
-class Content extends React.Component {
-  render() {
-    return(
-      <div style={{backgroundColor:'yellow',border:'1px solid blue', height:'700px',width:'100%'}}>
+// class Content extends React.Component {
+//   render() {
+  
+//     return(
+//       <div style={{backgroundColor:'yellow',border:'1px solid blue', height:'700px',width:'100%'}}>
         
-      </div>
-    )
-  }
-}
+//       </div>
+//     )
+//   }
+// }
 export default Header;
