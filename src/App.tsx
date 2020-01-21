@@ -37,7 +37,8 @@ class Header extends React.Component<any, any> {
       checkC:false,
       Counter:0,
       onchangeCounter:0,
-      allResult:[]
+      allResult:[],
+      isHideData:false
     };
   }
   
@@ -115,12 +116,17 @@ class Header extends React.Component<any, any> {
     }
   }
   getData = () => {
+    this.setState({isHideData:false});
     let data = fetch(`https://jsonplaceholder.typicode.com/users`);
     data.then(respone => {
       return respone.json();
     }).then(result => {
       this.setState({allResult:result});
     })
+  }
+  hideData = () => {
+    this.setState({allResult:''});
+    this.setState({isHideData:true});
   }
 
   render() {
@@ -136,6 +142,7 @@ class Header extends React.Component<any, any> {
           <div style={{ marginLeft:'60%' }}>
           <Button type="button" style={{backgroundColor:'orange',color:'white'}} onClick={this.handleClick}>Login</Button>
           <Button style={{backgroundColor:'orange',color:'white', marginLeft:10}} onClick= {this.getData}>View</Button>
+          <Button style={{ backgroundColor:'orange', color:'white' }} onClick={this.hideData}>Hide Data</Button>
           </div>
           </Toolbar>
           <Dialog open={this.state.open} aria-labelledby="form-dialog-title">
@@ -212,8 +219,7 @@ class Header extends React.Component<any, any> {
           </TableRow>
         </TableHead>
         <TableBody>
-          
-            {
+          {(this.state.isHideData) ? '' :
               this.state.allResult.map((data:any) => {
               return <TableRow>
               <TableCell>{data.id}</TableCell>
@@ -223,7 +229,7 @@ class Header extends React.Component<any, any> {
               <TableCell>{data.email}</TableCell>
               </TableRow>
               })
-            }
+          }
             </TableBody>
             </Table>
             </Paper>
@@ -233,14 +239,4 @@ class Header extends React.Component<any, any> {
     )
   }
 }
-// class Content extends React.Component {
-//   render() {
-  
-//     return(
-//       <div style={{backgroundColor:'yellow',border:'1px solid blue', height:'700px',width:'100%'}}>
-        
-//       </div>
-//     )
-//   }
-// }
 export default Header;
