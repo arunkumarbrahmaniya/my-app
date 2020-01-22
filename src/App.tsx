@@ -19,6 +19,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import './App.css';
 
 
@@ -38,10 +39,12 @@ class Header extends React.Component<any, any> {
       Counter:0,
       onchangeCounter:0,
       allResult:[],
-      isHideData:false
+      isHideData:false,
+      CalculatorFirst:'',
+      CalculatorSecond:''
     };
   }
-  
+  CalculatorCount = 0;
   handleClick = () => {
     this.setState({open:true});
   }
@@ -125,8 +128,26 @@ class Header extends React.Component<any, any> {
     })
   }
   hideData = () => {
-    this.setState({allResult:''});
+    this.setState({allResult:[]});
     this.setState({isHideData:true});
+  }
+  CalucatorValue = (evt:any, value:any) => {
+    if (this.CalculatorCount === 0) {
+    this.setState({CalculatorFirst: Number(value)});
+    this.CalculatorCount++;
+    }
+    if (this.CalculatorCount > 0) {
+      let getfirstvalue = this.state.CalculatorFirst;
+      if (Number(getfirstvalue) === 0) {
+        this.setState({CalculatorFirst:value});
+      } else{
+      getfirstvalue = getfirstvalue + Number(value);
+      this.setState({CalculatorFirst:getfirstvalue});
+      }
+    }
+  }
+  handleCalculatorDelete = () => {
+    this.setState({CalculatorFirst:'0'});
   }
 
   render() {
@@ -208,7 +229,9 @@ class Header extends React.Component<any, any> {
         (this.state.allResult !== '' || this.state.allResult !== undefined) ?
         (<div style={{ height:700, width:'100%', backgroundColor:'dodgerblue', marginTop:45 }}>
           <Paper style={{width:'80%', marginLeft:120}}>
-          <Table>
+          {
+            (this.state.allResult.length === 0) ? '' :
+          (<Table>
         <TableHead>
           <TableRow>
             <TableCell>ID</TableCell>
@@ -231,11 +254,102 @@ class Header extends React.Component<any, any> {
               })
           }
             </TableBody>
-            </Table>
+            </Table>)
+  }
             </Paper>
-        </div>) :''
+
+            <Button style={{backgroundColor:'orange',color:'white', margin:'20px 0px 0px 20px'}}>Calculator</Button>
+            <Paper style={{height:600, width:450, margin:'20px 0px 0px 20px', backgroundColor:'#ffffe6'}}>
+            <TextareaAutosize
+              style={{minWidth:444, maxWidth:444,
+                minHeight:100, maxHeight:100,
+                backgroundColor:'#f2f2f2', borderBottom:'1px solid black', 
+                textAlign:'right', fontSize:50,}}
+                disabled
+                value={this.state.CalculatorFirst}
+            />
+            <div style={{marginLeft:17}}>
+            <Button style={{backgroundColor:'darkgray',color:'white', height:60,
+            width:100, fontSize:25, marginRight:3, marginBottom:10}}
+             onClick={(e:any) => this.CalucatorValue(e,"1")}>
+              1
+            </Button>
+            <Button style={{backgroundColor:'darkgray',color:'white', height:60,
+            width:100, fontSize:25,marginRight:3,marginBottom:10}}
+            onClick={(e:any) => this.CalucatorValue(e,"2")}>
+              2
+            </Button>
+            <Button style={{backgroundColor:'darkgray',color:'white', height:60,
+            width:100, fontSize:25, marginRight:3, marginBottom:10}}
+            onClick={(e:any) => this.CalucatorValue(e,"3")}>
+              3
+            </Button>
+            <Button style={{backgroundColor:'darkgray',color:'white', height:60,
+            width:100, fontSize:25, marginRight:3, marginBottom:10}}>
+              /
+            </Button>
+            <Button style={{backgroundColor:'darkgray',color:'white', height:60,
+            width:100, fontSize:25, marginRight:3,marginBottom:10}}
+            onClick={(e:any) => this.CalucatorValue(e,"4")}>
+              4
+            </Button>
+            <Button style={{backgroundColor:'darkgray',color:'white', height:60,
+            width:100, fontSize:25,marginRight:3, marginBottom:10}}
+            onClick={(e:any) => this.CalucatorValue(e,"5")}>
+              5
+            </Button>
+            <Button style={{backgroundColor:'darkgray',color:'white', height:60,
+            width:100, fontSize:25, marginRight:3,marginBottom:10}}
+            onClick={(e:any) => this.CalucatorValue(e,"6")}>
+              6
+            </Button>
+            <Button style={{backgroundColor:'darkgray',color:'white', height:60,
+            width:100, fontSize:25, marginRight:3, marginBottom:10}}>
+              X
+            </Button>
+            <Button style={{backgroundColor:'darkgray',color:'white', height:60,
+            width:100, fontSize:25, marginRight:3, marginBottom:10}}
+            onClick={(e:any) => this.CalucatorValue(e,"7")}>
+              7
+            </Button>
+            <Button style={{backgroundColor:'darkgray',color:'white', height:60,
+            width:100, fontSize:25, marginRight:3,marginBottom:10}}
+            onClick={(e:any) => this.CalucatorValue(e,"8")}>
+              8
+            </Button>
+            <Button style={{backgroundColor:'darkgray',color:'white', height:60,
+            width:100, fontSize:25,marginRight:3,marginBottom:10}}
+            onClick={(e:any) => this.CalucatorValue(e,"9")}>
+              9
+            </Button>
+            <Button style={{backgroundColor:'darkgray',color:'white', height:60,
+            width:100, fontSize:25, marginRight:3, marginBottom:10}}>
+              -
+            </Button>
+            <Button style={{backgroundColor:'darkgray',color:'white', height:60,
+            width:100, fontSize:25, marginRight:3,marginBottom:10}}
+            onClick={(e:any) => this.CalucatorValue(e,"0")}>
+              0
+            </Button>
+            <Button style={{backgroundColor:'darkgray',color:'white', height:60,
+            width:200, fontSize:25, marginRight:3,marginBottom:10}}>
+              =
+            </Button>
+            <Button style={{backgroundColor:'darkgray',color:'white', height:60,
+            width:100, fontSize:25, marginRight:3,marginBottom:10}}>
+              +
+            </Button>
+            <Button style={{backgroundColor:'darkgray',color:'white', height:60,
+            width:400, fontSize:25, marginRight:3,marginBottom:10}}
+            onClick={this.handleCalculatorDelete}
+            >
+              C
+            </Button>
+            </div>
+            </Paper>
+        </div>
+
       </React.Fragment>
-      
     )
   }
 }
